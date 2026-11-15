@@ -1,0 +1,41 @@
+{
+  "name": "satsstack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "playwright test",
+    "test:e2e": "playwright test",
+    "test:simulation": "node contracts/test/simulation.test.js",
+    "compile:contract": "node contracts/compile.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^22.10.1",
+    "solc": "^0.8.28",
+    "typescript": "^5.7.2",
+    "viem": "^2.57.20"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
+    "@tanstack/react-query": "^5.107.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "lucide-react": "^1.73.0",
+    "next": "^15.1.0",
+    "postcss": "^8.5.33",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.5"
+  }
+}
