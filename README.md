@@ -2,6 +2,7 @@
 
 **Non-Custodial Bitcoin Dollar-Cost Averaging Vault on Mezo with `sMUSD` Idle Yield, Scheduled Tigris AMM Swaps, and Trove ICR Collateral Protection**
 
+[![Live App](https://img.shields.io/badge/Live_App-satsstack.vercel.app-F59E0B?style=flat-square&logo=vercel&logoColor=white)](https://satsstack.vercel.app)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.28_(Paris_EVM)-363636?style=flat-square&logo=solidity&logoColor=white)](./contracts/SatsStackVault.sol)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](./tsconfig.json)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-0E1116?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -13,6 +14,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-F0F4F8?style=flat-square)](./LICENSE)
 
 Automated Bitcoin dollar-cost averaging on Mezo that parks unswapped MUSD inside `sMUSD` (`MUSDSavingsRate`), swaps scheduled tranches into native BTC on the Tigris AMM, and blocks buys before execution if your Mezo Trove collateral ratio drops below your safety floor.
+
+**Live App:** [https://satsstack.vercel.app](https://satsstack.vercel.app) | **Verified Vault (`31611`):** [`0x9f2f599fb96a8f743bbeb551138a09cdf15926b6`](https://explorer.test.mezo.org/address/0x9f2f599fb96a8f743bbeb551138a09cdf15926b6)
 
 ![SatsStack Active Plans Desk](docs/screenshots/dashboard-desktop.png)
 
@@ -308,6 +311,8 @@ npm test
 ---
 
 ## Deploying the Frontend to Vercel
+
+**Live Deployment:** [https://satsstack.vercel.app](https://satsstack.vercel.app)
 
 1. Import `Pizzylee001/satsstack` in the Vercel dashboard.
 2. Leave **Framework Preset** as `Next.js` and **Root Directory** as `./`.
