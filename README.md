@@ -2,8 +2,6 @@
 
 Automated Bitcoin dollar-cost averaging on Mezo that parks unswapped MUSD inside `sMUSD` (`MUSDSavingsRate`), swaps scheduled tranches into native BTC on the Tigris AMM, and blocks buys before execution if your Mezo Trove collateral ratio drops below your safety floor.
 
-Built for the [Mezo Buildathon on AKINDO (Wave 2)](https://app.akindo.io/wave-hacks/OVOO0gdrVU8379D10?ref=mezo.org) and live on Mezo Testnet (Chain ID `31611`) at [`0x9f2f599fb96a8f743bbeb551138a09cdf15926b6`](https://explorer.test.mezo.org/address/0x9f2f599fb96a8f743bbeb551138a09cdf15926b6).
-
 ![SatsStack Active Plans Desk](docs/screenshots/dashboard-desktop.png)
 
 ## Contents
