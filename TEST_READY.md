@@ -12,8 +12,8 @@ Playwright Config: /home/antigravity/satsstack/playwright.config.ts
 The end-to-end (E2E) testing suite for SatsStack has been established across a 4-Tier test architecture and verified across 4 standardized viewport targets.
 
 - **Total Test Files**: 6 comprehensive specification suites
-- **Total Test Cases**: 67 unique test specifications
-- **Total Executions**: 268 across 4 device viewports
+- **Total Test Cases**: 72 unique test specifications
+- **Total Executions**: 288 across 4 device viewports
 - **TypeScript Compilation**: Clean (tsc --noEmit exits with code 0)
 - **Anti-Slop Compliance**: 100% verified (zero em dashes, zero en dashes, strict tabular numbers)
 
@@ -54,11 +54,11 @@ Covers all primary user behaviors and feature contracts across SatsStack:
 - **Feature 1 (Scaffolding & Spec Initialization)**: Verified in infrastructure setup, DESIGN.md tokens, and LEDGER.md.
 - **Feature 2 (SatsStackVault.sol Smart Contract)**: Accumulation vault methods verified via opaque-box triggers and ledger tests.
 - **Feature 3 (Zero-Gas Simulation & Keygen)**: Simulation checks and deployer address verification.
-- **Feature 4 (App Foundation & Mezo Client)**: Navigation shell, Mezo Testnet 31611 badge, Multicall3 reading state.
+- **Feature 4 (App Foundation & Mezo Client)**: Navigation shell, SVG favicon, Mezo Testnet 31611 badge, Multicall3 reading state.
 - **Feature 5 (Strategy Studio `/create`)**: Interactive DCA budget inputs, tranche slider calculation, interval cadence selector, Trove ICR preview.
 - **Feature 6 (Active Plans Desk `/dashboard`)**: Portfolio telemetry cards (Active MUSD, Stacked BTC, Weighted Entry, Yield Offset), Trove ICR status shield, active plan list, manual tranche execution.
 - **Feature 7 (Plan Ledger `/plan/[id]`)**: Fill history table, on-chain transaction hash links, cost basis comparison vs oracle, Route Stacked BTC to My Trove modal.
-- **Feature 8 (8 Behavior-Relevant Component States & Judge Access)**: Default, Hover, Focus-Visible, Active press, Disabled, Loading skeleton, Error, Empty, and pre-populated live sample plans.
+- **Feature 8 (8 Behavior-Relevant Component States & Non-Custodial Wallet Access)**: Default, Hover, Focus-Visible, Active press, Disabled, Loading skeleton, Error, Empty, live Mezo Testnet RPC hydration, EIP-6963/EIP-1193 wallet connection, and Read-Only Watch Mode.
 - **Feature 9 (E2E Playwright Suite & Quality Gate)**: 4 viewport reflows, WCAG AA contrast (minimum 4.5:1), visible focus rings, tabular-nums.
 - **Feature 10 (Git Cleanliness & Secret Safety)**: Absence of tracked secrets (.env, private keys) and production artifact readiness.
 
@@ -91,13 +91,13 @@ Covers all primary user behaviors and feature contracts across SatsStack:
 
 | File | Tests per Project | Total Executions (4 Projects) | Scope |
 |---|---|---|---|
-| `tests/e2e_navigation_and_routes.spec.ts` | 10 | 40 | Navigation shell, routes, breadcrumbs, network badge |
+| `tests/e2e_navigation_and_routes.spec.ts` | 12 | 48 | Navigation shell, SVG favicon, EIP-1193 connect/disconnect, routes, network badge |
 | `tests/e2e_strategy_studio_create.spec.ts` | 10 | 40 | Strategy Studio (/create), sliders, cadences, ICR preview |
-| `tests/e2e_active_plans_dashboard.spec.ts` | 10 | 40 | Active Plans Desk (/dashboard), metrics, execution trigger |
+| `tests/e2e_active_plans_dashboard.spec.ts` | 10 | 40 | Active Plans Desk (/dashboard), live vault rows, metrics, execution triggers |
 | `tests/e2e_plan_ledger_and_router.spec.ts` | 10 | 40 | Plan Ledger (/plan/[id]), fill history, Trove collateral routing |
-| `tests/e2e_responsive_and_a11y.spec.ts` | 14 | 56 | 4 viewports reflow, landmarks, keyboard focus, touch targets |
-| `tests/e2e_anti_slop_delivery_gate.spec.ts` | 13 | 52 | Zero em dashes, zero console errors, copy integrity, 8 states |
-| **Total** | **67** | **268** | **Comprehensive Full-Spectrum E2E Coverage** |
+| `tests/e2e_responsive_and_a11y.spec.ts` | 14 | 56 | 4 viewports reflow, footer & mobile header bounds, landmarks, focus, touch targets |
+| `tests/e2e_anti_slop_delivery_gate.spec.ts` | 16 | 64 | Zero em dashes, zero console errors, copy integrity, 8 states across 4 routes |
+| **Total** | **72** | **288** | **Comprehensive Full-Spectrum E2E Coverage** |
 
 ---
 

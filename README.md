@@ -9,7 +9,7 @@
 [![Viem](https://img.shields.io/badge/Viem-2.57-F59E0B?style=flat-square)](https://viem.sh/)
 [![Mezo Testnet](https://img.shields.io/badge/Mezo_Testnet-31611_(0x9f2f...26b6)-F59E0B?style=flat-square)](https://explorer.test.mezo.org/address/0x9f2f599fb96a8f743bbeb551138a09cdf15926b6)
 [![Simulation Tests](https://img.shields.io/badge/RPC_Simulation-8%2F8_Passing-10B981?style=flat-square)](./contracts/test/simulation.test.js)
-[![Playwright E2E](https://img.shields.io/badge/Playwright_E2E-268%2F268_Passing-10B981?style=flat-square)](./playwright.config.ts)
+[![Playwright E2E](https://img.shields.io/badge/Playwright_E2E-288%2F288_Passing-10B981?style=flat-square)](./playwright.config.ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-F0F4F8?style=flat-square)](./LICENSE)
 
 Automated Bitcoin dollar-cost averaging on Mezo that parks unswapped MUSD inside `sMUSD` (`MUSDSavingsRate`), swaps scheduled tranches into native BTC on the Tigris AMM, and blocks buys before execution if your Mezo Trove collateral ratio drops below your safety floor.
@@ -72,33 +72,37 @@ Execution inside [`contracts/SatsStackVault.sol`](contracts/SatsStackVault.sol) 
 
 ## Routes and Screenshots
 
+The live application starts **disconnected by default** (`Connect Wallet`) so users and reviewers can connect any EIP-6963 or EIP-1193 browser wallet (MetaMask, Rabby, Coinbase Wallet, etc.), switch to Mezo Testnet (`31611`), swap Testnet BTC to MUSD in-app, or enter **Read-Only Watch Mode** for any address without needing a browser extension.
+
+The screenshots below were captured with the seeded vault deployer wallet (`0x58F6...7Fde`) connected on Mezo Testnet so reviewers can immediately inspect authenticated owner controls, live allowances, and populated on-chain vault telemetry.
+
 ### 1. Active Plans Desk (`/dashboard`)
 
-Displays aggregate portfolio telemetry (`Active MUSD in Vault`, `Stacked BTC`, `Weighted Entry Price`, `Yield Offset`), live Trove ICR safety banner, status filter (`ALL`, `ACTIVE`, `PAUSED`, `COMPLETED`), empty state CTA, due-tranche execution triggers, and batch BTC claiming.
+Reads live `SatsStackVault` plans, `sMUSD` positions, `TroveManager` ICR health, and oracle spot prices from Mezo Testnet via `Multicall3` and on-chain event logs. Supports `All Vault Plans` vs `My Plans` scope toggles, status filters (`ALL`, `ACTIVE`, `PAUSED`, `COMPLETED`), live due-tranche execution, batch BTC claiming, and direct BTC-to-MUSD acquisition.
 
 ![Active Plans Desk](docs/screenshots/dashboard-desktop.png)
 
 ### 2. Strategy Studio (`/create`)
 
-Two-pane configuration studio with budget input, tranche slider, cadence presets (`60s Demo`, `1h`, `1d`, `7d`), slippage tolerance selector with high-slippage warning, interactive Trove ICR safety floor slider (`110%` to `220%`), live settlement routing preview, and two-step approval + launch actions.
+Two-pane configuration studio with MUSD budget validation against live wallet balances, tranche slider, cadence presets (`60s Demo`, `1h`, `1d`, `7d`), slippage tolerance selector with high-slippage warning, interactive Trove ICR safety floor slider (`110%` to `220%`), live Tigris Router BTC quote preview, and two-step MUSD `approve()` + `createPlan()` wallet execution.
 
 ![Strategy Studio](docs/screenshots/create-plan-desktop.png)
 
 ### 3. Position Ledger (`/plan/[id]`)
 
-Per-plan ledger showing budget remaining in `sMUSD`, stacked BTC, accrued yield, cost-basis alpha against oracle spot, Trove safety thresholds, full tranche fill history table with Blockscout transaction links, and lifecycle modals (`Top Up MUSD`, `Pause`/`Resume`, `Cancel & Withdraw`).
+Per-plan ledger showing remaining MUSD in `sMUSD`, stacked BTC, accrued yield, cost-basis spread against PriceFeed oracle spot, Trove safety thresholds, `Execution Fill History` and `On-Chain Plan Event Log` indexed from real chain events with Blockscout links, and owner controls (`Top Up MUSD`, `Pause`/`Resume`, `Claim BTC`, `Route Stacked BTC to My Trove`, `Cancel & Withdraw`).
 
 ![Position Ledger](docs/screenshots/plan-detail-desktop.png)
 
 ### 4. Trove Collateral Router Modal (`/plan/[id]`)
 
-Modal confirmation showing stacked BTC amount, current Trove ICR, projected ICR gain, and exact call target (`BorrowerOperations.addColl()`).
+Confirmation dialog displaying stacked BTC balance, current Trove ICR, `BorrowerOperations.addColl()` pre-flight verification, fallback `Claim BTC` option if no Trove is open, and direct routing submission.
 
 ![Trove Collateral Router Modal](docs/screenshots/trove-modal.png)
 
 ### 5. Mobile Responsive Layout (`390x844`)
 
-Single-column responsive layout verified across `390px`, `768px`, `1024px`, and `1440px` viewports.
+Single-column responsive layout verified across `390px`, `768px`, `1024px`, and `1440px` viewports with zero header clipping or horizontal overflow.
 
 <p align="center">
   <img src="docs/screenshots/mobile-responsive.png" width="390" alt="SatsStack mobile responsive dashboard at 390px width" />
@@ -117,8 +121,12 @@ All contract records and transaction hashes below come directly from Mezo Testne
 | **Seed Swap (BTC -> MUSD)** | Swapped `0.001 BTC` via Tigris Router | [View Tx](https://explorer.test.mezo.org/tx/0x19fc5b1404f4c05340da50563ae601008778d235b4769d761cf99641e932162e) |
 | **MUSD Approval Tx** | Approved vault allowance | [View Tx](https://explorer.test.mezo.org/tx/0x5c450ea42cf0464cb8ce9a0c17e36ba8e5cd7db936fa13e7d8732cd9b7649b39) |
 | **Plan #0 Creation Tx** | Block `16793318` (`50 MUSD` budget, `10 MUSD` tranche, `60s`, `150%` ICR floor) | [View Tx](https://explorer.test.mezo.org/tx/0xda2799978588c7532cd8f153587579af592d3d8d76dc78471b430c2b5ddade81) |
-| **Tranche #1 Execution Tx** | Block `16793324` (`10 MUSD` -> `0.000128398934041922 BTC`) | [View Tx](https://explorer.test.mezo.org/tx/0x1f5493e0475b786c13261a1f37509322a8e03a77dfef37065138ea71f30441e2) |
-| **Deployer / Plan #0 Owner** | `0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde` | [View Address](https://explorer.test.mezo.org/address/0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde) |
+| **Plan #0 Tranche #1 Tx** | Block `16793324` (`10 MUSD` -> `0.000128398934041922 BTC`) | [View Tx](https://explorer.test.mezo.org/tx/0x1f5493e0475b786c13261a1f37509322a8e03a77dfef37065138ea71f30441e2) |
+| **Plan #1 Creation Tx** | Block `16796478` (`15 MUSD` budget, `5 MUSD` tranche, `1h`, `150%` ICR floor) | [View Tx](https://explorer.test.mezo.org/tx/0x26eee32d511a8c8fdcdba9f42dfcfcbfc13e4eecc1d0742628c99002c28bde8d) |
+| **Plan #1 Tranche #1 Tx** | Block `16796496` (`5 MUSD` -> `0.000064210160125794 BTC`) | [View Tx](https://explorer.test.mezo.org/tx/0x5eaee096876029259bbefe3afd733895c8c788c942975099b141b75cadf7ad9b) |
+| **Plan #2 Creation Tx** | Block `16796498` (`10 MUSD` budget, `5 MUSD` tranche, `1d`, `175%` ICR floor) | [View Tx](https://explorer.test.mezo.org/tx/0x39e68ec5a5b24adb738a7701f208a055791e1096f99d7667db8840dfe78966ad) |
+| **Plan #2 Pause Tx** | Block `16796499` (`PAUSED` lifecycle state transition) | [View Tx](https://explorer.test.mezo.org/tx/0x92c4419627d54b5f2e1fb17453b551f148ac3f265b884fb96f34cf599d54c960) |
+| **Deployer / Plan #0-#2 Owner** | `0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde` | [View Address](https://explorer.test.mezo.org/address/0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde) |
 
 ---
 
@@ -158,8 +166,8 @@ Compiled with `solc` `0.8.28` (`optimizer: enabled, runs: 200`, `viaIR: true`, `
 
 ## Scope and Data Notes
 
-- **Smart Contract & On-Chain State**: `SatsStackVault.sol` is live on Mezo Testnet at `0x9f2f599fb96a8f743bbeb551138a09cdf15926b6`, with Plan `#0` created and Tranche `#1` executed on-chain (`0x1f5493e0...41e2`). The 8-case simulation suite in [`contracts/test/simulation.test.js`](contracts/test/simulation.test.js) runs directly against `https://rpc.test.mezo.org` using `eth_call` `stateOverride`.
-- **Frontend UI & Judge Mode**: [`lib/mezoClient.ts`](lib/mezoClient.ts) provides `viem` Testnet RPC helpers (`fetchLiveTroveData`, `fetchMusdBalance`), and [`lib/deployedContract.json`](lib/deployedContract.json) + [`lib/contracts.ts`](lib/contracts.ts) bind the deployed contract ABI and address. For immediate inspection by judges without a funded Testnet wallet or MetaMask signing step, `/dashboard`, `/create`, and `/plan/[id]` hydrate from [`lib/sampleData.ts`](lib/sampleData.ts) (where Plan `#0` mirrors the real on-chain seeded Plan `#0` and `txHash`, while Plans `#1` to `#3` demonstrate `ACTIVE`, `PAUSED`, and `COMPLETED` lifecycles locally in React state).
+- **Smart Contract & On-Chain State**: `SatsStackVault.sol` is deployed live on Mezo Testnet at `0x9f2f599fb96a8f743bbeb551138a09cdf15926b6`, with live seeded Plans `#0`, `#1`, and `#2` recorded in [`contracts/deployment.json`](contracts/deployment.json). The 8-case simulation suite in [`contracts/test/simulation.test.js`](contracts/test/simulation.test.js) runs directly against `https://rpc.test.mezo.org` using `eth_call` `stateOverride`.
+- **Non-Custodial Frontend & Live RPC Transport**: All pages (`/dashboard`, `/create`, `/plan/[id]`) hydrate strictly from live Mezo Testnet state (zero mock or static plan arrays) via [`lib/mezoClient.ts`](lib/mezoClient.ts) and the allowlisted Next.js App Router RPC proxy at [`app/api/rpc/route.ts`](app/api/rpc/route.ts) (`Multicall3` state reads + indexed on-chain logs). [`lib/walletContext.tsx`](lib/walletContext.tsx) starts disconnected by default, discovers EIP-6963 and EIP-1193 wallets (`window.ethereum`), prompts network switching to Chain ID `31611`, supports in-app BTC-to-MUSD Tigris swaps ([`components/SwapMusdModal.tsx`](components/SwapMusdModal.tsx)), signs real vault transactions on-chain, and includes a Read-Only Watch Mode in [`components/WalletConnectModal.tsx`](components/WalletConnectModal.tsx).
 
 ---
 
@@ -168,49 +176,59 @@ Compiled with `solc` `0.8.28` (`optimizer: enabled, runs: 200`, `viaIR: true`, `
 ```text
 satsstack/
 ├── app/
+│   ├── api/rpc/route.ts             # Allowlisted Next.js JSON-RPC proxy to rpc.test.mezo.org
+│   ├── icon.svg                     # Brand SatsStack vector favicon
 │   ├── layout.tsx                   # Root layout and Space Grotesk / Inter / JetBrains Mono setup
 │   ├── globals.css                  # Design tokens, dark canvas (#0E1116), tabular numeric classes
 │   ├── page.tsx                     # Root redirect to /dashboard
 │   ├── dashboard/page.tsx           # Route 1: Active Plans Desk
 │   ├── create/page.tsx              # Route 2: Strategy Studio
 │   └── plan/[id]/page.tsx           # Route 3: Position Ledger & Trove Collateral Router
+├── public/
+│   └── favicon.svg                  # Public static SVG favicon mirror
 ├── components/
-│   ├── Navbar.tsx                   # Top navigation, Mezo Testnet (31611) pill, Trove health pill
+│   ├── Navbar.tsx                   # Top navigation, Mezo Testnet (31611) pill, Trove health pill, wallet CTA
+│   ├── Footer.tsx                   # Verified Mezo explorer & faucet quick links
+│   ├── WalletConnectModal.tsx       # EIP-6963/EIP-1193 wallet connector, chain switcher, Read-Only Watch Mode
+│   ├── SwapMusdModal.tsx            # Interactive Testnet BTC -> MUSD Tigris AMM swap modal
 │   ├── ActionExecuteButton.tsx      # 8-state primary, secondary, and danger button primitive
 │   ├── DcaParameterSlider.tsx       # Tranche size and Trove ICR safety floor slider
-│   ├── PlanRowCard.tsx              # Plan summary row with countdown and execute trigger
+│   ├── PlanRowCard.tsx              # Live on-chain plan row with countdown and execute trigger
 │   ├── PositionLedgerTable.tsx      # Execution fill ledger table with Blockscout links
 │   ├── RouteCollateralModal.tsx     # 1-click Route Stacked BTC to My Trove confirmation modal
-│   └── TroveCircuitBadge.tsx        # Healthy / Paused Trove ICR safety indicator
+│   └── TroveCircuitBadge.tsx        # Healthy / Paused / No Trove ICR safety indicator
 ├── contracts/
 │   ├── SatsStackVault.sol           # Core 431-line DCA + sMUSD + Tigris + Trove safety contract
 │   ├── SatsStackVault.json          # Compiled ABI and Paris EVM bytecode
 │   ├── compile.js                   # Deterministic solc 0.8.28 (viaIR + paris) build script
-│   ├── deployment.json              # Verified Mezo Testnet deployment & seeded Plan #0 record
+│   ├── deployment.json              # Verified Mezo Testnet deployment & seeded Plan #0-#2 records
 │   ├── seedResult.json              # Plan #0 creation & Tranche #1 execution receipt data
 │   ├── deployer.json                # Public deployer wallet address metadata
 │   ├── scripts/
 │   │   ├── keygen.js                # Generates deployer keypair to gitignored .deployer.secret.json
 │   │   ├── check_balance.js         # Checks MEZO/BTC and MUSD balances on Mezo Testnet
 │   │   ├── deploy.js                # Broadcasts SatsStackVault.sol to Mezo Testnet
-│   │   └── seed_plan.js             # Swaps BTC -> MUSD, approves, creates Plan #0, runs Tranche #1
+│   │   ├── seed_plan.js             # Swaps BTC -> MUSD, approves, creates Plan #0, runs Tranche #1
+│   │   └── seed_additional_plans.js # Seeds live Plan #1 (ACTIVE) and Plan #2 (PAUSED) on-chain
 │   └── test/
 │       └── simulation.test.js       # 8-case zero-gas eth_call stateOverride suite against live RPC
 ├── lib/
 │   ├── constants.ts                 # Chain ID, RPC URL, verified Mezo contract addresses, presets
-│   ├── contracts.ts                 # Contract ABIs (Vault, ERC20, TroveManager, BorrowerOps, Multicall3)
+│   ├── contracts.ts                 # Contract ABIs (Vault, ERC20, sMUSD, Tigris, Trove, Multicall3)
 │   ├── deployedContract.json        # Frontend contract binding synced by deploy/seed scripts
-│   ├── mezoClient.ts                # Viem public client and live Testnet read helpers
-│   ├── sampleData.ts                # Plan #0 on-chain record + showcase plans #1 to #3
-│   └── utils.ts                     # Address truncation, currency, BTC, and countdown formatters
-├── tests/                           # 6 Playwright E2E suites (268 executions across 4 viewports)
+│   ├── mezoClient.ts                # Viem public client, Multicall3 plan reads, event log indexers
+│   ├── types.ts                     # Shared TypeScript interfaces for plans, fills, balances, telemetry
+│   ├── utils.ts                     # Address truncation, currency, BTC, and countdown formatters
+│   └── walletContext.tsx            # EIP-6963/EIP-1193 signer state, chain switch, tx helper context
+├── tests/                           # 6 Playwright E2E suites (72 specs x 4 viewports = 288 executions)
 ├── docs/
 │   ├── diagrams/settlement-flow.svg # Brand-matched settlement architecture SVG diagram
 │   └── screenshots/                 # Desktop and mobile production screenshots
+├── capture_screenshots.js           # Playwright screenshot runner injecting deployer signer for docs
 ├── design-system/LEDGER.md          # Project-local design variety record
 ├── DESIGN.md                        # Full 9-section design system specification
 ├── LICENSE                          # MIT License
-└── package.json                     # Next.js 15, React 19, Tailwind v4, Viem, Playwright scripts
+└── package.json                     # Next.js 16, React 19, Tailwind v4, Viem, Playwright scripts
 ```
 
 ---
@@ -265,7 +283,7 @@ Open `http://localhost:3000` (redirects to `/dashboard`).
 
 ### 5. Run the Playwright E2E Verification Suite
 
-Runs 6 test suites (67 specs across 4 viewports: `desktop-1440`, `laptop-1024`, `tablet-768`, `mobile-390`, `268` total executions):
+Runs 6 test suites (72 specs across 4 viewports: `desktop-1440`, `laptop-1024`, `tablet-768`, `mobile-390`, `288` total executions):
 
 ```bash
 npm test
