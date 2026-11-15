@@ -1,0 +1,4 @@
+.deployer.secret.json
+*.secret.json
+.env
+.env.*
