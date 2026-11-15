@@ -4,7 +4,7 @@
 
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.28_(Paris_EVM)-363636?style=flat-square&logo=solidity&logoColor=white)](./contracts/SatsStackVault.sol)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](./tsconfig.json)
-[![Next.js](https://img.shields.io/badge/Next.js-15.1-0E1116?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-0E1116?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Viem](https://img.shields.io/badge/Viem-2.57-F59E0B?style=flat-square)](https://viem.sh/)
 [![Mezo Testnet](https://img.shields.io/badge/Mezo_Testnet-31611_(0x9f2f...26b6)-F59E0B?style=flat-square)](https://explorer.test.mezo.org/address/0x9f2f599fb96a8f743bbeb551138a09cdf15926b6)

@@ -19,10 +19,17 @@
     "test:simulation": "node contracts/test/simulation.test.js",
     "compile:contract": "node contracts/compile.js"
   },
-  "keywords": ["mezo", "bitcoin", "dca", "musd", "smusd", "tigris", "defi"],
+  "keywords": [
+    "mezo",
+    "bitcoin",
+    "dca",
+    "musd",
+    "smusd",
+    "tigris",
+    "defi"
+  ],
   "author": "Pizzy Lee",
   "license": "MIT",
-  "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "@types/node": "^22.10.1",
@@ -36,10 +43,10 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "lucide-react": "^1.73.0",
-    "next": "^15.1.0",
+    "next": "^16.4.6",
     "postcss": "^8.5.33",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "tailwindcss": "^4.3.5"
   }
 }
