@@ -94,7 +94,7 @@ export default function WalletConnectModal() {
             <div>
               <h2
                 id="wallet-modal-title"
-                className="font-['Space_Grotesk'] text-lg font-bold text-[#F0F4F8]"
+                className="font-heading text-lg font-bold text-[#F0F4F8]"
               >
                 {isConnected ? 'Connected Wallet' : 'Connect Wallet'}
               </h2>

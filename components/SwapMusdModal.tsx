@@ -109,7 +109,7 @@ export default function SwapMusdModal() {
             <div>
               <h2
                 id="swap-modal-title"
-                className="font-['Space_Grotesk'] text-lg font-bold text-[#F0F4F8]"
+                className="font-heading text-lg font-bold text-[#F0F4F8]"
               >
                 Acquire Testnet MUSD
               </h2>
