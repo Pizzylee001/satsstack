@@ -1,0 +1,7 @@
+{
+  "address": "0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde",
+  "network": "Mezo Testnet",
+  "chainId": 31611,
+  "faucetUrl": "https://faucet.test.mezo.org",
+  "instructions": "Request testnet BTC gas tokens at https://faucet.test.mezo.org for address 0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde"
+}

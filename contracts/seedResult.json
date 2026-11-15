@@ -1,0 +1,23 @@
+{
+  "vaultAddress": "0x9F2F599fb96a8f743bBeb551138a09cDF15926B6",
+  "planId": "0",
+  "swapTxHash": "0x19fc5b1404f4c05340da50563ae601008778d235b4769d761cf99641e932162e",
+  "approveTxHash": "0x5c450ea42cf0464cb8ce9a0c17e36ba8e5cd7db936fa13e7d8732cd9b7649b39",
+  "createPlanTxHash": "0xda2799978588c7532cd8f153587579af592d3d8d76dc78471b430c2b5ddade81",
+  "createPlanBlockNumber": "16793318",
+  "executeTrancheTxHash": "0x1f5493e0475b786c13261a1f37509322a8e03a77dfef37065138ea71f30441e2",
+  "executeTrancheBlockNumber": "16793324",
+  "planDetails": {
+    "owner": "0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde",
+    "totalBudgetMusd": "50",
+    "trancheSizeMusd": "10",
+    "intervalSeconds": "60",
+    "remainingBudgetMusd": "40",
+    "accumulatedBtcSats": "128398934041922",
+    "accumulatedBtcEther": "0.000128398934041922",
+    "minIcrFloor": "1.5",
+    "totalTranches": "5",
+    "executedTranches": "1",
+    "status": "ACTIVE"
+  }
+}

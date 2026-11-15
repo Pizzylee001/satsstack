@@ -1,0 +1,43 @@
+{
+  "contractAddress": "0x9f2f599fb96a8f743bbeb551138a09cdf15926b6",
+  "transactionHash": "0xb74325e5d3da1accfd33208a67c864f8a836a1873178b31a073412f68d0776e4",
+  "blockNumber": "16793290",
+  "gasUsed": "2037858",
+  "deployer": "0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde",
+  "network": "Mezo Testnet",
+  "chainId": 31611,
+  "rpcUrl": "https://rpc.test.mezo.org",
+  "explorerUrl": "https://explorer.test.mezo.org/address/0x9f2f599fb96a8f743bbeb551138a09cdf15926b6",
+  "deployedAt": "2026-11-15T09:14:13.663Z",
+  "parameters": {
+    "musd": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "smusd": "0x6f461c68B2c5492C0F5CCEc5a264d692aA7A8e16",
+    "router": "0x9a1ff7FE3a0F69959A3fBa1F1e5ee18e1A9CD7E9",
+    "btcToken": "0x7b7C000000000000000000000000000000000000",
+    "troveManager": "0xE47c80e8c23f6B4A1aE41c34837a0599D5D16bb0",
+    "borrowerOperations": "0x484439C27419a20ffb1c1fa16fA68c07B71391d8"
+  },
+  "seededPlan": {
+    "vaultAddress": "0x9F2F599fb96a8f743bBeb551138a09cDF15926B6",
+    "planId": "0",
+    "swapTxHash": "0x19fc5b1404f4c05340da50563ae601008778d235b4769d761cf99641e932162e",
+    "approveTxHash": "0x5c450ea42cf0464cb8ce9a0c17e36ba8e5cd7db936fa13e7d8732cd9b7649b39",
+    "createPlanTxHash": "0xda2799978588c7532cd8f153587579af592d3d8d76dc78471b430c2b5ddade81",
+    "createPlanBlockNumber": "16793318",
+    "executeTrancheTxHash": "0x1f5493e0475b786c13261a1f37509322a8e03a77dfef37065138ea71f30441e2",
+    "executeTrancheBlockNumber": "16793324",
+    "planDetails": {
+      "owner": "0x58F6B39A1De2f72C50ce966E01f24153c86B7Fde",
+      "totalBudgetMusd": "50",
+      "trancheSizeMusd": "10",
+      "intervalSeconds": "60",
+      "remainingBudgetMusd": "40",
+      "accumulatedBtcSats": "128398934041922",
+      "accumulatedBtcEther": "0.000128398934041922",
+      "minIcrFloor": "1.5",
+      "totalTranches": "5",
+      "executedTranches": "1",
+      "status": "ACTIVE"
+    }
+  }
+}
