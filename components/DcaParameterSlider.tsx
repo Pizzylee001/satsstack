@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useId } from 'react';
 
 interface DcaParameterSliderProps {
   label: string;
@@ -27,28 +27,35 @@ export default function DcaParameterSlider({
   hint,
   isDanger = false,
 }: DcaParameterSliderProps) {
-  const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
+  const inputId = useId();
+  const safeMax = Math.max(min + step, max);
+  const clampedValue = Math.min(safeMax, Math.max(min, value));
 
   return (
-    <div className="flex flex-col gap-2 p-3.5 rounded-lg bg-[#181D24] border border-[#262E3B]">
-      <div className="flex items-center justify-between">
-        <label className="text-xs font-medium text-[#8B95A5]">{label}</label>
+    <div className="flex flex-col gap-2 p-4 rounded-xl bg-[#181D24] border border-[#262E3B]">
+      <div className="flex items-center justify-between gap-2">
+        <label htmlFor={inputId} className="text-xs font-medium text-[#8B95A5]">
+          {label}
+        </label>
         <div className="flex items-center gap-1 font-mono text-sm font-semibold text-[#F0F4F8] tabular-nums">
-          <span className={isDanger ? 'text-[#EF4444]' : 'text-[#F59E0B]'}>{value}</span>
+          <span className={isDanger ? 'text-[#EF4444]' : 'text-[#F59E0B]'}>
+            {clampedValue}
+          </span>
           {unit && <span className="text-[#8B95A5] text-xs">{unit}</span>}
         </div>
       </div>
 
-      <div className="relative py-1">
+      <div className="relative py-2">
         <input
+          id={inputId}
           type="range"
           name={name}
           min={min}
-          max={max}
+          max={safeMax}
           step={step}
-          value={value}
+          value={clampedValue}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full h-1.5 bg-[#262E3B] rounded-lg appearance-none cursor-pointer accent-[#F59E0B] focus-visible:outline-2 focus-visible:outline-[#F59E0B]"
+          className="w-full h-2 bg-[#262E3B] rounded-lg appearance-none cursor-pointer accent-[#F59E0B] focus-visible:outline-2 focus-visible:outline-[#F59E0B]"
         />
       </div>
 
