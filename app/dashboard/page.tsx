@@ -26,9 +26,16 @@ import {
   ExternalLink,
 } from 'lucide-react';
 
-function DashboardContent() {
+function SearchParamsEmptySync({ onSync }: { onSync: (val: boolean) => void }) {
   const searchParams = useSearchParams();
-  const forceEmpty = searchParams.get('empty') === 'true';
+  const emptyParam = searchParams.get('empty') === 'true';
+  React.useEffect(() => {
+    onSync(emptyParam);
+  }, [emptyParam, onSync]);
+  return null;
+}
+
+function DashboardContent({ forceEmpty }: { forceEmpty: boolean }) {
 
   const {
     account,
@@ -224,8 +231,8 @@ function DashboardContent() {
   return (
     <main role="main" className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-8">
       {/* Top Banner: Live Trove ICR Safety Circuit + Wallet / Quick Actions */}
-      <div className="p-4 rounded-xl bg-[#181D24] border border-[#262E3B] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
+      <div className="p-4 rounded-xl bg-[#181D24] border border-[#262E3B] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-3 min-w-0">
           <TroveCircuitBadge
             currentIcr={hasTrove ? activeTrove!.icrPercent : null}
             hasActiveTrove={hasTrove}
@@ -246,12 +253,12 @@ function DashboardContent() {
                 {formatCurrency(walletBalances.musdBalance)} MUSD
               </span>
             ) : (
-              'Live on-chain plans verified from SatsStackVault on Mezo Testnet.'
+              'Live vault state from Mezo Testnet.'
             )}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap lg:flex-nowrap items-center gap-2 shrink-0">
           {!isConnected && (
             <button
               type="button"
@@ -490,7 +497,7 @@ function DashboardContent() {
         )}
 
         {/* Loading, Error, Empty, or Live Plans List */}
-        {isProtocolLoading && plans.length === 0 ? (
+        {!forceEmpty && isProtocolLoading && plans.length === 0 ? (
           <div className="space-y-3" data-testid="plans-loading">
             {[0, 1, 2].map((idx) => (
               <div
@@ -568,18 +575,15 @@ function DashboardContent() {
 }
 
 export default function DashboardPage() {
+  const [forceEmpty, setForceEmpty] = useState(false);
+
   return (
     <div className="flex-1 flex flex-col">
       <Navbar />
-      <Suspense
-        fallback={
-          <div className="p-8 text-center text-xs font-mono text-[#8B95A5]">
-            Loading live plans from Mezo Testnet...
-          </div>
-        }
-      >
-        <DashboardContent />
+      <Suspense fallback={null}>
+        <SearchParamsEmptySync onSync={setForceEmpty} />
       </Suspense>
+      <DashboardContent forceEmpty={forceEmpty} />
     </div>
   );
 }

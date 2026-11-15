@@ -59,9 +59,16 @@ export const mezoTestnet = defineChain({
   },
 });
 
+function getPublicRpcUrl(): string {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return `${window.location.origin}/api/rpc`;
+  }
+  return MEZO_TESTNET_RPC_URL;
+}
+
 export const mezoPublicClient = createPublicClient({
   chain: mezoTestnet,
-  transport: http(MEZO_TESTNET_RPC_URL),
+  transport: http(getPublicRpcUrl()),
 });
 
 const STATUS_MAP: Record<number, PlanStatus> = {

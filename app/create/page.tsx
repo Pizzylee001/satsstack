@@ -121,8 +121,7 @@ export default function CreatePlanPage() {
         if (!cancelled) setQuotedBtcOut(scaledBtc);
       } catch {
         if (!cancelled) {
-          const fallbackRate = telemetry?.tigrisSpotPrice || telemetry?.oracleBtcPrice || 0;
-          setQuotedBtcOut(fallbackRate > 0 ? budgetMusd / fallbackRate : null);
+          setQuotedBtcOut(null);
         }
       } finally {
         if (!cancelled) setIsQuoting(false);
@@ -133,7 +132,7 @@ export default function CreatePlanPage() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [budgetMusd, isBudgetValid, telemetry]);
+  }, [budgetMusd, isBudgetValid]);
 
   const fallbackRate = telemetry?.tigrisSpotPrice || telemetry?.oracleBtcPrice || 0;
   const estimatedBtcOutput =
