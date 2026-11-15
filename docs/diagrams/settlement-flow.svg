@@ -1,191 +1,287 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%" style="background-color: #0E1116; font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 670" width="100%" height="100%" role="img" aria-labelledby="diagramTitle diagramDesc">
+  <title id="diagramTitle">SatsStack Architecture and Settlement Flow</title>
+  <desc id="diagramDesc">Flow diagram showing MUSD deposit into SatsStackVault, idle parking in sMUSD (MUSDSavingsRate), TroveManager ICR safety check before tranche withdrawal, Tigris AMM swap into native BTC, and exit via claimBtc or routeBtcToTrove.</desc>
+
+  <style>
+    :root {
+      --bg-canvas: #0E1116;
+      --bg-surface: #181D24;
+      --border-default: #262E3B;
+      --fg-default: #F0F4F8;
+      --fg-muted: #8B95A5;
+      --accent-amber: #F59E0B;
+      --accent-emerald: #10B981;
+      --accent-danger: #EF4444;
+      --accent-info: #3B82F6;
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', Menlo, monospace;
+    }
+    svg {
+      background-color: var(--bg-canvas);
+      font-family: var(--font-body);
+    }
+    .title {
+      fill: var(--fg-default);
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      fill: var(--fg-muted);
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .node-box {
+      fill: var(--bg-surface);
+      stroke: var(--border-default);
+      stroke-width: 1.5;
+    }
+    .node-box-amber {
+      fill: var(--bg-surface);
+      stroke: var(--accent-amber);
+      stroke-width: 2;
+    }
+    .node-box-emerald {
+      fill: var(--bg-surface);
+      stroke: var(--accent-emerald);
+      stroke-width: 1.5;
+    }
+    .node-box-info {
+      fill: var(--bg-surface);
+      stroke: var(--accent-info);
+      stroke-width: 1.5;
+    }
+    .node-box-danger {
+      fill: var(--bg-surface);
+      stroke: var(--accent-danger);
+      stroke-width: 1.5;
+    }
+    .node-title {
+      fill: var(--fg-default);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .node-title-amber {
+      fill: var(--accent-amber);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .node-title-emerald {
+      fill: var(--accent-emerald);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .node-title-info {
+      fill: var(--accent-info);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .node-title-danger {
+      fill: var(--accent-danger);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .node-body {
+      fill: var(--fg-default);
+      font-size: 13px;
+    }
+    .node-muted {
+      fill: var(--fg-muted);
+      font-size: 13px;
+    }
+    .node-mono {
+      fill: var(--accent-amber);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+    }
+    .node-mono-muted {
+      fill: var(--fg-muted);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .edge-label {
+      fill: var(--fg-muted);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .edge-ok {
+      fill: var(--accent-emerald);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .edge-abort {
+      fill: var(--accent-danger);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .divider {
+      stroke: var(--border-default);
+      stroke-width: 1;
+    }
+  </style>
+
   <defs>
-    <!-- Technical Background Grid -->
     <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#262E3B" stroke-width="0.75" stroke-opacity="0.4" />
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#262E3B" stroke-width="0.75" stroke-opacity="0.35" />
     </pattern>
 
-    <!-- Gradients -->
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F59E0B" />
-      <stop offset="100%" stop-color="#D97706" />
-    </linearGradient>
-
-    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10B981" />
-      <stop offset="100%" stop-color="#059669" />
-    </linearGradient>
-
-    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#06B6D4" />
-      <stop offset="100%" stop-color="#0284C7" />
-    </linearGradient>
-
-    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8B5CF6" />
-      <stop offset="100%" stop-color="#6D28D9" />
-    </linearGradient>
-
-    <!-- Subtle hardware illumination glow -->
-    <radialGradient id="topGlow" cx="50%" cy="0%" r="60%">
-      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.12" />
-      <stop offset="100%" stop-color="#0E1116" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Markers -->
-    <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#F59E0B" />
+    <marker id="arrowAmber" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L8,3.5 z" fill="#F59E0B" />
     </marker>
-    <marker id="arrowEmerald" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#10B981" />
+    <marker id="arrowEmerald" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L8,3.5 z" fill="#10B981" />
     </marker>
-    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#06B6D4" />
+    <marker id="arrowDanger" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L8,3.5 z" fill="#EF4444" />
     </marker>
-    <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#5A6474" />
+    <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L8,3.5 z" fill="#8B95A5" />
     </marker>
   </defs>
 
-  <!-- Background -->
   <rect width="100%" height="100%" fill="#0E1116" />
   <rect width="100%" height="100%" fill="url(#grid)" />
-  <rect width="100%" height="320" fill="url(#topGlow)" />
 
-  <!-- Title Block -->
-  <g transform="translate(60, 48)">
-    <text x="0" y="0" fill="#F0F4F8" font-size="22" font-weight="700" letter-spacing="-0.02em" font-family="'Space Grotesk', sans-serif">
-      SatsStack Architecture &amp; Settlement Flow
-    </text>
-    <text x="0" y="24" fill="#8B95A5" font-size="13" font-weight="400">
-      Yield-bearing capital accumulation with automated Tigris AMM execution and Trove liquidation protection
-    </text>
+  <!-- Header -->
+  <g transform="translate(48, 44)">
+    <text x="0" y="0" class="title">SatsStack On-Chain Settlement Architecture</text>
+    <text x="0" y="24" class="subtitle">Verified execution order in SatsStackVault.sol on Mezo Testnet (Chain ID 31611)</text>
   </g>
 
-  <!-- Flow Line Highlights -->
-  <!-- 1. Depositor to Vault -->
-  <path d="M 210 230 L 260 230" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowGold)" />
-  
-  <!-- 2. Vault to sMUSD (Idle Yield) -->
-  <path d="M 400 210 L 400 155 L 460 155" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#arrowEmerald)" />
-  <path d="M 460 175 L 420 175 L 420 220" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrowEmerald)" />
+  <!-- Connectors -->
+  <!-- 1. Depositor -> SatsStackVault -->
+  <path d="M 228 256 L 280 256" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowAmber)" />
+  <text x="234" y="244" class="edge-label">MUSD</text>
 
-  <!-- 3. Keeper Trigger -->
-  <path d="M 330 380 L 330 270" fill="none" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowGold)" />
+  <!-- 2. SatsStackVault <-> sMUSD (Idle yield & tranche pull) -->
+  <path d="M 352 192 L 352 96 L 578 96" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+  <text x="366" y="86" class="edge-ok">deposit(budget)</text>
 
-  <!-- 4. Vault to Tigris Swap -->
-  <path d="M 470 240 L 540 240" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowGold)" />
+  <path d="M 584 128 L 434 128 L 434 184" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowEmerald)" />
+  <text x="444" y="150" class="edge-label">withdraw(tranche)</text>
 
-  <!-- 5. Tigris Swap to Trove ICR Safety Circuit -->
-  <path d="M 720 240 L 780 240" fill="none" stroke="#06B6D4" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <!-- 3. Owner or Keeper -> SatsStackVault -->
+  <path d="M 384 424 L 384 350" fill="none" stroke="#8B95A5" stroke-width="2" marker-end="url(#arrowMuted)" />
+  <text x="394" y="388" class="edge-label">executeTranche()</text>
 
-  <!-- 6. Safety Circuit Fork: Leg A (Native BTC Claim) -->
-  <path d="M 960 225 L 1010 225 L 1010 165 L 1040 165" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+  <!-- 4. SatsStackVault -> Trove Safety Check -->
+  <path d="M 500 256 L 578 256" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowAmber)" />
 
-  <!-- 7. Safety Circuit Fork: Leg B (Trove Collateral Top-Up) -->
-  <path d="M 960 255 L 1010 255 L 1010 325 L 1040 325" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowGold)" />
+  <!-- 5. TroveManager -> Trove Safety Check -->
+  <path d="M 702 424 L 702 330" fill="none" stroke="#8B95A5" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowMuted)" />
+  <text x="712" y="380" class="edge-label">getCurrentICR()</text>
 
-  <!-- 8. Safety Circuit Inspection query from TroveManager -->
-  <path d="M 870 380 L 870 280" fill="none" stroke="#5A6474" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowMuted)" />
+  <!-- 6. Trove Safety Check -> Swap Aborted (via clear corridor x=552) -->
+  <path d="M 624 322 L 624 354 L 552 354 L 552 550" fill="none" stroke="#EF4444" stroke-width="2" marker-end="url(#arrowDanger)" />
+  <text x="562" y="542" class="edge-abort">ICR &lt; floor</text>
 
-  <!-- NODE 1: User / Depositor -->
-  <g transform="translate(60, 180)">
-    <rect width="150" height="100" rx="8" fill="#181D24" stroke="#262E3B" stroke-width="1.5" />
-    <rect width="150" height="4" rx="2" fill="#F59E0B" />
-    <text x="16" y="32" fill="#F0F4F8" font-size="14" font-weight="600">User / Depositor</text>
-    <text x="16" y="54" fill="#8B95A5" font-size="12">Deposits MUSD</text>
-    <text x="16" y="74" fill="#F59E0B" font-size="12" font-family="'JetBrains Mono', monospace">Plan Budget</text>
+  <!-- 7. Trove Safety Check -> Tigris AMM Swap -->
+  <path d="M 800 256 L 870 256" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+  <text x="808" y="244" class="edge-ok">ICR ok</text>
+
+  <!-- 8. Tigris AMM Swap -> Settlement exits -->
+  <path d="M 984 316 L 984 366 L 948 366 L 948 408" fill="none" stroke="#10B981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+  <text x="870" y="394" class="edge-ok">claim</text>
+
+  <path d="M 1038 316 L 1038 366 L 1110 366 L 1110 520" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowAmber)" />
+  <text x="1118" y="454" class="edge-label">addColl</text>
+
+  <!-- Node 1: Depositor -->
+  <g transform="translate(48, 200)">
+    <rect width="180" height="116" rx="8" class="node-box" />
+    <line x1="12" y1="2" x2="168" y2="2" stroke="#F59E0B" stroke-width="3" stroke-linecap="round" />
+    <text x="16" y="32" class="node-title">Depositor</text>
+    <text x="16" y="56" class="node-muted">Calls createPlan()</text>
+    <text x="16" y="78" class="node-body">Sets budget, tranche,</text>
+    <text x="16" y="96" class="node-body">cadence, and ICR floor</text>
   </g>
 
-  <!-- NODE 2: SatsStackVault Core -->
-  <g transform="translate(260, 160)">
-    <rect width="210" height="130" rx="8" fill="#181D24" stroke="#F59E0B" stroke-width="2" />
-    <rect width="210" height="4" rx="2" fill="url(#goldGrad)" />
-    <text x="16" y="32" fill="#F0F4F8" font-size="15" font-weight="700">SatsStackVault</text>
-    <text x="16" y="52" fill="#8B95A5" font-size="12">0x9f2f...26b6 (Chain 31611)</text>
-    <line x1="16" y1="62" x2="194" y2="62" stroke="#262E3B" stroke-width="1" />
-    <text x="16" y="80" fill="#F0F4F8" font-size="12">• Manages Tranche Schedule</text>
-    <text x="16" y="98" fill="#F0F4F8" font-size="12">• Routes Idle Funds to sMUSD</text>
-    <text x="16" y="116" fill="#F0F4F8" font-size="12">• Enforces ICR Safety Rules</text>
+  <!-- Node 2: SatsStackVault -->
+  <g transform="translate(288, 192)">
+    <rect width="212" height="150" rx="8" class="node-box-amber" />
+    <text x="16" y="32" class="node-title-amber">SatsStackVault</text>
+    <text x="16" y="52" class="node-mono-muted">0x9f2f...26b6</text>
+    <line x1="16" y1="64" x2="196" y2="64" class="divider" />
+    <text x="16" y="86" class="node-body">Owns plan state</text>
+    <text x="16" y="106" class="node-body">Parks MUSD in sMUSD</text>
+    <text x="16" y="126" class="node-body">Holds stacked BTC</text>
   </g>
 
-  <!-- NODE 3: sMUSD Savings Vault (Yield) -->
-  <g transform="translate(460, 110)">
-    <rect width="210" height="90" rx="8" fill="#181D24" stroke="#10B981" stroke-width="1.5" />
-    <text x="16" y="28" fill="#10B981" font-size="14" font-weight="600">sMUSD Savings Vault</text>
-    <text x="16" y="48" fill="#8B95A5" font-size="12">ERC-4626 Yield Accrual</text>
-    <text x="16" y="68" fill="#F0F4F8" font-size="12">Idle capital compounds yield</text>
+  <!-- Node 3: sMUSD (MUSDSavingsRate) -->
+  <g transform="translate(584, 58)">
+    <rect width="268" height="84" rx="8" class="node-box-emerald" />
+    <text x="16" y="29" class="node-title-emerald">sMUSD (MUSDSavingsRate)</text>
+    <text x="16" y="49" class="node-mono-muted">0x6f46...8e16</text>
+    <text x="16" y="69" class="node-body">Earns yield while tranches wait</text>
   </g>
 
-  <!-- NODE 4: Keeper / Automation Trigger -->
-  <g transform="translate(260, 380)">
-    <rect width="210" height="85" rx="8" fill="#181D24" stroke="#8B5CF6" stroke-width="1.5" />
-    <text x="16" y="28" fill="#A78BFA" font-size="14" font-weight="600">Cadence Trigger / Keeper</text>
-    <text x="16" y="48" fill="#8B95A5" font-size="12">Permissionless Automation</text>
-    <text x="16" y="68" fill="#F0F4F8" font-size="12">Calls executeTranche()</text>
+  <!-- Node 4: Owner or Keeper -->
+  <g transform="translate(274, 424)">
+    <rect width="236" height="92" rx="8" class="node-box" />
+    <text x="16" y="30" class="node-title">Owner or Keeper</text>
+    <text x="16" y="52" class="node-muted">Permissionless timing trigger</text>
+    <text x="16" y="74" class="node-mono">nextExecutionTime &lt;= now</text>
   </g>
 
-  <!-- NODE 5: Tigris Basic MUSD/BTC Pool -->
-  <g transform="translate(540, 195)">
-    <rect width="180" height="90" rx="8" fill="#181D24" stroke="#06B6D4" stroke-width="1.5" />
-    <text x="16" y="28" fill="#06B6D4" font-size="14" font-weight="600">Tigris AMM Swap</text>
-    <text x="16" y="48" fill="#8B95A5" font-size="12">Basic MUSD/BTC Pool</text>
-    <text x="16" y="68" fill="#F0F4F8" font-size="12">MUSD Swapped for BTC</text>
+  <!-- Node 5: Trove Safety Check -->
+  <g transform="translate(584, 194)">
+    <rect width="216" height="128" rx="8" class="node-box-amber" />
+    <text x="16" y="30" class="node-title-amber">1. Trove Safety Check</text>
+    <text x="16" y="50" class="node-muted">Runs before swap</text>
+    <line x1="16" y1="62" x2="200" y2="62" class="divider" />
+    <text x="16" y="84" class="node-body">Queries checkTroveIcr()</text>
+    <text x="16" y="106" class="node-body">Blocks buy if ICR &lt; floor</text>
   </g>
 
-  <!-- NODE 6: Trove ICR Safety Circuit -->
-  <g transform="translate(780, 185)">
-    <rect width="180" height="105" rx="8" fill="#181D24" stroke="#F59E0B" stroke-width="1.5" />
-    <text x="16" y="28" fill="#F59E0B" font-size="14" font-weight="600">ICR Safety Circuit</text>
-    <text x="16" y="48" fill="#8B95A5" font-size="12">Pre-Execution Safety Check</text>
-    <line x1="16" y1="58" x2="164" y2="58" stroke="#262E3B" stroke-width="1" />
-    <text x="16" y="74" fill="#10B981" font-size="11">ICR &gt;= Target: Healthy</text>
-    <text x="16" y="92" fill="#EF4444" font-size="11">ICR &lt; Target: Liquidation Risk</text>
+  <!-- Node 6: TroveManager + PriceFeed -->
+  <g transform="translate(592, 424)">
+    <rect width="224" height="92" rx="8" class="node-box" />
+    <text x="16" y="30" class="node-title">TroveManager + PriceFeed</text>
+    <text x="16" y="52" class="node-mono-muted">0xE47c...6bb0</text>
+    <text x="16" y="74" class="node-muted">Oracle: 0x86bC...9366</text>
   </g>
 
-  <!-- NODE 7: Mezo TroveManager -->
-  <g transform="translate(780, 380)">
-    <rect width="180" height="85" rx="8" fill="#181D24" stroke="#262E3B" stroke-width="1.5" />
-    <text x="16" y="28" fill="#8B95A5" font-size="14" font-weight="600">TroveManager</text>
-    <text x="16" y="48" fill="#5A6474" font-size="12">Mezo Debt Protocol</text>
-    <text x="16" y="68" fill="#F0F4F8" font-size="12">Returns current Trove ICR</text>
+  <!-- Node 7: Swap Aborted (TroveUnsafe) -->
+  <g transform="translate(432, 558)">
+    <rect width="276" height="84" rx="8" class="node-box-danger" />
+    <text x="16" y="29" class="node-title-danger">Swap Aborted (TroveUnsafe)</text>
+    <text x="16" y="51" class="node-body">Reverts before withdrawing sMUSD;</text>
+    <text x="16" y="69" class="node-muted">MUSD stays parked earning yield</text>
   </g>
 
-  <!-- NODE 8A: Fork Option A - Depositor BTC Claim -->
-  <g transform="translate(1040, 115)">
-    <rect width="200" height="90" rx="8" fill="#181D24" stroke="#10B981" stroke-width="1.5" />
-    <text x="16" y="28" fill="#10B981" font-size="14" font-weight="600">Native BTC Accumulation</text>
-    <text x="16" y="48" fill="#8B95A5" font-size="12">Standard DCA Destination</text>
-    <text x="16" y="68" fill="#F0F4F8" font-size="12">claimBtc() to Depositor</text>
+  <!-- Node 8: Tigris AMM Swap -->
+  <g transform="translate(878, 198)">
+    <rect width="276" height="116" rx="8" class="node-box-info" />
+    <text x="16" y="30" class="node-title-info">2. Tigris AMM Swap</text>
+    <text x="16" y="50" class="node-mono-muted">Router 0x9a1f...D7E9</text>
+    <line x1="16" y1="62" x2="260" y2="62" class="divider" />
+    <text x="16" y="84" class="node-body">Basic MUSD/BTC Pool (0xd16A...6AA9)</text>
+    <text x="16" y="104" class="node-body">Swaps MUSD -&gt; Native BTC (0x7b7C...)</text>
   </g>
 
-  <!-- NODE 8B: Fork Option B - Trove Collateral Injection -->
-  <g transform="translate(1040, 275)">
-    <rect width="200" height="95" rx="8" fill="#181D24" stroke="#F59E0B" stroke-width="1.5" />
-    <text x="16" y="28" fill="#F59E0B" font-size="14" font-weight="600">BorrowerOperations</text>
-    <text x="16" y="48" fill="#8B95A5" font-size="12">addColl() Auto-Top-Up</text>
-    <line x1="16" y1="58" x2="184" y2="58" stroke="#262E3B" stroke-width="1" />
-    <text x="16" y="74" fill="#10B981" font-size="12">Restores Trove ICR Floor</text>
+  <!-- Node 9A: Wallet Claim -->
+  <g transform="translate(854, 416)">
+    <rect width="210" height="86" rx="8" class="node-box-emerald" />
+    <text x="16" y="30" class="node-title-emerald">Exit A: Wallet Claim</text>
+    <text x="16" y="52" class="node-mono">claimBtc(planId, to)</text>
+    <text x="16" y="72" class="node-muted">Transfers native BTC out</text>
   </g>
 
-  <!-- Legend and Verification Footer -->
-  <g transform="translate(60, 560)">
-    <rect width="1080" height="70" rx="6" fill="#111827" stroke="#262E3B" stroke-width="1" />
-    <text x="24" y="28" fill="#8B95A5" font-size="12" font-weight="600">SETTLEMENT PROTOCOL LEGEND</text>
-    
-    <circle cx="28" cy="48" r="5" fill="#F59E0B" />
-    <text x="40" y="52" fill="#F0F4F8" font-size="12">MUSD Capital Flow</text>
-
-    <circle cx="200" cy="48" r="5" fill="#10B981" />
-    <text x="212" y="52" fill="#F0F4F8" font-size="12">sMUSD Yield &amp; BTC Payout</text>
-
-    <circle cx="410" cy="48" r="5" fill="#06B6D4" />
-    <text x="422" y="52" fill="#F0F4F8" font-size="12">Tigris AMM Swap Route</text>
-
-    <circle cx="610" cy="48" r="5" fill="#8B5CF6" />
-    <text x="622" y="52" fill="#F0F4F8" font-size="12">Keeper Cadence Trigger</text>
-
-    <circle cx="820" cy="48" r="5" fill="#5A6474" />
-    <text x="832" y="52" fill="#F0F4F8" font-size="12">On-Chain State Query</text>
+  <!-- Node 9B: Trove Collateral Top-Up -->
+  <g transform="translate(924, 528)">
+    <rect width="234" height="106" rx="8" class="node-box-amber" />
+    <text x="16" y="30" class="node-title-amber">Exit B: Trove Collateral</text>
+    <text x="16" y="52" class="node-mono">routeBtcToTrove(planId)</text>
+    <text x="16" y="74" class="node-body">BorrowerOperations.addColl()</text>
+    <text x="16" y="92" class="node-muted">Raises Trove ICR buffer</text>
   </g>
 </svg>
