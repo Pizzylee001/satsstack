@@ -39,5 +39,27 @@
       "executedTranches": "1",
       "status": "ACTIVE"
     }
-  }
+  },
+  "additionalSeededPlans": [
+    {
+      "planId": "1",
+      "createPlanTxHash": "0x26eee32d511a8c8fdcdba9f42dfcfcbfc13e4eecc1d0742628c99002c28bde8d",
+      "createPlanBlockNumber": "16796478",
+      "executeTrancheTxHash": "0x5eaee096876029259bbefe3afd733895c8c788c942975099b141b75cadf7ad9b",
+      "executeTrancheBlockNumber": "16796496",
+      "remainingBudgetMusd": "10",
+      "accumulatedBtcEther": "0.000064210160125794",
+      "status": "ACTIVE"
+    },
+    {
+      "planId": "2",
+      "createPlanTxHash": "0x39e68ec5a5b24adb738a7701f208a055791e1096f99d7667db8840dfe78966ad",
+      "createPlanBlockNumber": "16796498",
+      "pauseTxHash": "0x92c4419627d54b5f2e1fb17453b551f148ac3f265b884fb96f34cf599d54c960",
+      "pauseBlockNumber": "16796499",
+      "remainingBudgetMusd": "10",
+      "accumulatedBtcEther": "0",
+      "status": "PAUSED"
+    }
+  ]
 }
