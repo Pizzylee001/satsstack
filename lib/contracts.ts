@@ -1,4 +1,3 @@
-import { CONTRACT_ADDRESSES } from './constants';
 import SatsStackVaultJson from '../contracts/SatsStackVault.json';
 
 export const SATS_STACK_VAULT_ABI = SatsStackVaultJson.abi;
@@ -47,9 +46,97 @@ export const ERC20_ABI = [
   },
 ] as const;
 
+export const SMUSD_ABI = [
+  {
+    inputs: [{ name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'account', type: 'address' }],
+    name: 'claimableYield',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const;
+
+export const PRICE_FEED_ABI = [
+  {
+    inputs: [],
+    name: 'fetchPrice',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+] as const;
+
+export const TIGRIS_ROUTER_ABI = [
+  {
+    inputs: [],
+    name: 'defaultFactory',
+    outputs: [{ name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { name: 'amountIn', type: 'uint256' },
+      {
+        name: 'routes',
+        type: 'tuple[]',
+        components: [
+          { name: 'from', type: 'address' },
+          { name: 'to', type: 'address' },
+          { name: 'stable', type: 'bool' },
+          { name: 'factory', type: 'address' },
+        ],
+      },
+    ],
+    name: 'getAmountsOut',
+    outputs: [{ name: 'amounts', type: 'uint256[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { name: 'amountIn', type: 'uint256' },
+      { name: 'amountOutMin', type: 'uint256' },
+      {
+        name: 'routes',
+        type: 'tuple[]',
+        components: [
+          { name: 'from', type: 'address' },
+          { name: 'to', type: 'address' },
+          { name: 'stable', type: 'bool' },
+          { name: 'factory', type: 'address' },
+        ],
+      },
+      { name: 'to', type: 'address' },
+      { name: 'deadline', type: 'uint256' },
+    ],
+    name: 'swapExactTokensForTokens',
+    outputs: [{ name: 'amounts', type: 'uint256[]' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+] as const;
+
 export const TROVE_MANAGER_ABI = [
   {
-    inputs: [{ name: '_borrower', type: 'address' }],
+    inputs: [
+      { name: '_borrower', type: 'address' },
+      { name: '_price', type: 'uint256' },
+    ],
     name: 'getCurrentICR',
     outputs: [{ name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -57,10 +144,12 @@ export const TROVE_MANAGER_ABI = [
   },
   {
     inputs: [{ name: '_borrower', type: 'address' }],
-    name: 'getTroveCollAndDebt',
+    name: 'getEntireDebtAndColl',
     outputs: [
-      { name: 'coll', type: 'uint256' },
       { name: 'debt', type: 'uint256' },
+      { name: 'coll', type: 'uint256' },
+      { name: 'pendingLUSDDebtReward', type: 'uint256' },
+      { name: 'pendingETHReward', type: 'uint256' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -69,6 +158,13 @@ export const TROVE_MANAGER_ABI = [
     inputs: [{ name: '_borrower', type: 'address' }],
     name: 'getTroveStatus',
     outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'priceFeed',
+    outputs: [{ name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
