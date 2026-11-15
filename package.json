@@ -20,7 +20,7 @@
     "compile:contract": "node contracts/compile.js"
   },
   "keywords": ["mezo", "bitcoin", "dca", "musd", "smusd", "tigris", "defi"],
-  "author": "Lee",
+  "author": "Pizzy Lee",
   "license": "MIT",
   "type": "commonjs",
   "devDependencies": {

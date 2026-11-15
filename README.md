@@ -1,5 +1,17 @@
 # SatsStack
 
+**Non-Custodial Bitcoin Dollar-Cost Averaging Vault on Mezo with `sMUSD` Idle Yield, Scheduled Tigris AMM Swaps, and Trove ICR Collateral Protection**
+
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.28_(Paris_EVM)-363636?style=flat-square&logo=solidity&logoColor=white)](./contracts/SatsStackVault.sol)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](./tsconfig.json)
+[![Next.js](https://img.shields.io/badge/Next.js-15.1-0E1116?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Viem](https://img.shields.io/badge/Viem-2.57-F59E0B?style=flat-square)](https://viem.sh/)
+[![Mezo Testnet](https://img.shields.io/badge/Mezo_Testnet-31611_(0x9f2f...26b6)-F59E0B?style=flat-square)](https://explorer.test.mezo.org/address/0x9f2f599fb96a8f743bbeb551138a09cdf15926b6)
+[![Simulation Tests](https://img.shields.io/badge/RPC_Simulation-8%2F8_Passing-10B981?style=flat-square)](./contracts/test/simulation.test.js)
+[![Playwright E2E](https://img.shields.io/badge/Playwright_E2E-268%2F268_Passing-10B981?style=flat-square)](./playwright.config.ts)
+[![License: MIT](https://img.shields.io/badge/License-MIT-F0F4F8?style=flat-square)](./LICENSE)
+
 Automated Bitcoin dollar-cost averaging on Mezo that parks unswapped MUSD inside `sMUSD` (`MUSDSavingsRate`), swaps scheduled tranches into native BTC on the Tigris AMM, and blocks buys before execution if your Mezo Trove collateral ratio drops below your safety floor.
 
 ![SatsStack Active Plans Desk](docs/screenshots/dashboard-desktop.png)
