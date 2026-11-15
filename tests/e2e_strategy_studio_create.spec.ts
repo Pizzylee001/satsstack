@@ -22,8 +22,8 @@ test.describe('Tier 1: Strategy Studio (/create) Core Features', () => {
     const cadenceGroup = page.locator('button:has-text("1h"), button:has-text("1d"), button:has-text("60s"), [role="radiogroup"]').first();
     await expect(cadenceGroup).toBeVisible();
 
-    // Check Trove circuit toggle or indicator
-    const troveShield = page.locator('text=/Trove|ICR|Circuit|Floor/').first();
+    // Check Trove circuit slider/indicator inside form content
+    const troveShield = page.locator('main').locator('text=/Trove|ICR|Circuit|Floor/').first();
     await expect(troveShield).toBeVisible();
   });
 
