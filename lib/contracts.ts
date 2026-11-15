@@ -207,7 +207,7 @@ export const MULTICALL3_ABI = [
         type: 'tuple[]',
       },
     ],
-    stateMutability: 'payable',
+    stateMutability: 'view',
     type: 'function',
   },
 ] as const;

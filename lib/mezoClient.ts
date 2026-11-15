@@ -87,6 +87,14 @@ export function formatUtcDate(unixSeconds: number): string {
   return `${year}-${month}-${day} ${hrs}:${mins}:${secs} UTC`;
 }
 
+export async function waitForBlockSync(targetBlock: bigint): Promise<void> {
+  for (let i = 0; i < 6; i++) {
+    const current = await mezoPublicClient.getBlockNumber().catch(() => 0n);
+    if (current >= targetBlock) return;
+    await new Promise((resolve) => setTimeout(resolve, 600));
+  }
+}
+
 async function fetchOracleAndSpotPrice(): Promise<{
   oraclePriceWei: bigint;
   oraclePriceUsd: number;
